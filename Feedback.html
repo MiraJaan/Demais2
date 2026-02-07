@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback | Airly</title>
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      font-family: 'Playfair Display', serif;
+      background-image: url("bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+    }
+
+
+    .navbar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+    }
+
+    .menu {
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 100px;
+      font-style: italic;
+      font-size: 22px;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 70px;
+      left: 40px;
+      background: white;
+      color: black;
+      border-radius: 10px;
+      display: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      z-index: 10;
+    }
+
+    .dropdown div {
+      padding: 14px 22px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .dropdown div:hover {
+      background: #f2f2f2;
+    }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.6);
+      margin-bottom: 30px;
+    }
+
+    .content {
+      padding: 40px 60px;
+    }
+
+    .title {
+      font-size: 64px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .subtitle {
+      font-size: 26px;
+      margin-bottom: 30px;
+    }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      font-size: 20px;
+      line-height: 1.8;
+    }
+
+    h3 {
+      font-size: 26px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .tips-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .title {
+        font-size: 48px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <div class="menu" id="menuBtn">☰</div>
+
+    <div class="nav-links">
+      <div>Home</div>
+      <div>Activity</div>
+      <div>Tips</div>
+    </div>
+
+    <div></div>
+
+    <div class="dropdown" id="dropdown">
+      <div>Delhi</div>
+      <div>Bangalore</div>
+      <div>Mumbai</div>
+      <div>Hyderabad</div>
+      <div>Kolkata</div>
+      <div>Feedback</div>
+    </div>
+  </div>
+
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const dropdown = document.getElementById("dropdown");
+
+    menuBtn.addEventListener("click", () => {
+      dropdown.style.display =
+        dropdown.style.display === "block" ? "none" : "block";
+    });
+  </script>
+
+  <div class="divider"></div>
+
+  <div class="content">
+    <div class="title">Feedback</div>
+
+    <form action="/action_page.php">
+  <input type="text" id="fname" name="fname"><br><br>\
+  <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

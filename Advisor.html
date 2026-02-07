@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Delhi | Airly</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+height: 100vh;
+font-family: 'Playfair Display', sans-serif;
+background-image: url("bg.png");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+color: white;
+}
+
+.navbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px 40px;
+border-bottom-style:solid;
+}
+
+.menu {
+font-size: 28px;
+cursor: pointer;
+}
+
+.nav-links {
+display: flex;
+gap: 100px;
+font-size: 22px;
+font-style: italic;
+}
+
+.dropdown {
+position: absolute;
+top: 70px;
+left: 40px;
+background: white;
+color: black;
+border-radius: 10px;
+display: none;
+overflow: hidden;
+box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+z-index: 10;
+}
+
+.dropdown div {
+padding: 14px 22px;
+cursor: pointer;
+font-size: 18px;
+}
+
+.dropdown div:hover {
+background: #f2f2f2;
+}
+
+.divider {
+width: 100%;
+height: 1px;
+background: rgba(255, 255, 255, 0.6);
+margin-top: 20px;
+}
+
+.content {
+display: flex;
+justify-content: space-between;
+padding: 60px;
+}
+
+.left {
+max-width: 50%;
+font-family: 'Playfair Display', serif;
+}
+
+.city-name {
+font-size: 72px;
+font-weight: 700;
+margin-bottom: 25px;
+}
+
+.aqi-label {
+font-size: 28px;
+}
+
+.aqi-value {
+font-size: 36px;
+margin-top: 10px;
+}
+
+.btn {
+margin-top: 90px;
+padding: 14px 32px;
+border: 2px solid white;
+border-radius: 40px;
+background: transparent;
+color: white;
+font-family: 'Playfair Display', serif;
+font-size: 18px;
+cursor: pointer;
+transition: 0.3s ease;
+}
+
+.btn:hover {
+background: white;
+color: #444;
+}
+
+.right {
+font-family: 'Playfair Display', serif;
+font-size: 22px;
+line-height: 2.3;
+padding-top: 20px;
+}
+
+
+@media (max-width: 900px) {
+.content {
+flex-direction: column;
+gap: 40px;
+}
+
+.left, .right {
+max-width: 100%;
+}
+
+.city-name {
+font-size: 52px;
+}
+}
+</style>
+</head>
+
+<body>
+<body>
+
+ <div class="navbar">
+    <div class="menu" id="menuBtn">☰</div>
+
+    <div class="nav-links">
+      <div>Home</div>
+      <div>Activity</div>
+      <div>Tips</div>
+    </div>
+
+    <div></div>
+
+<div class="dropdown" id="dropdown">
+<div>Delhi</div>
+<div>Bangalore</div>
+<div>Mumbai</div>
+<div>Hyderabad</div>
+<div>Kolkata</div>
+<div>Feedback</div>
+</div>
+</div>
+
+<script>
+const menuBtn = document.getElementById("menuBtn");
+const dropdown = document.getElementById("dropdown");
+
+menuBtn.addEventListener("click", () => {
+dropdown.style.display =
+dropdown.style.display === "block" ? "none" : "block";
+});
+</script>
+
+<div class="content">
+
+<div class="left">
+<div class="city-name">Activity Advisor</div>
+
+<div class="advice"></div>
+
+<h2>
+<label for= "City"> Choose your city:</label>
+<select name="City" id="City">
+<option value="Delhi">Delhi</option>
+<option value="Bangalore">Bangalore</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Hyderabad">Hyderabad</option>
+<option value="Kolkata">Kolkata</option>
+</select>
+</h2>
+
+
+</div>
+
+</body>
+</html>
