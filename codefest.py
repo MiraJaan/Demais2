@@ -14,15 +14,41 @@ def aqi_parameters(aqi):
         return "Air quality is manageable, but indoor workouts masy feel better."
     else:
         return "Masks help, especially near traffic-heavy areas."
+
+#this is for the exposure calculators as the interactive tool
+def exposure_calculator(aqi, hours, effort):
+    exposure = aqi * hours
+
+    if effort == "low":
+        exposure *= 1
+    elif effort == "medium":
+        exposure *= 1.5
+    else:
+        exposure *= 2
+
+    if exposure < 100:
+        level = "low exposure"
+        text = "Health risk isn't that bad today"
+    elif exposure < 300:
+        level = "moderate exposure"
+        text = "You outsoor acyivity time is ok, but try limiting it if possible"
+    else:
+        level = "high exposure"
+        text = "High risk, please stay indoors"
+
+    return round(exposure, 2), level, text
+
 #This is basically for the webpage where the app would get the city from the dropdown thing the user selcts and then post it for python
 @app.route("/", methods=["GET","POST"])
 
 #This defines a funtion for the homepage and sets it as blank right now to add the data to
 def home():
-        data = none
+        data = None
     #basically it will upload the choice of city from the user
         if request.method == "POST":
             city = request.form["city"]
+            hours = float(request.form["hours"])
+            effort = request.form["effort"]
 
             # loctions into longitude and latititude
             geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}"
@@ -42,7 +68,9 @@ def home():
                 weather_url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
                 weather = requests.get(weather_url).json()
 #this is the final classification of the AQI
-                category, advice = classify_aqi()
+                category, advice = aqi_parameters(aqi)
+
+                exposure_score, exposure_level, exposure_text = exposure_calculator(aqi, hours, effort)
 
 #This is basically a dictionary that is putting together all thedata and it will help the HTML designing of the opage.
                 data = {
@@ -51,8 +79,11 @@ def home():
                     "category": category,
                     "advice": advice,
                     "temp": weather["main"]["temp"],
-                    "humidity": weather["main"]["humidity"]
-                    "wind": weather["wind"]["speed"]
+                    "humidity": weather["main"]["humidity"],
+                    "wind": weather["wind"]["speed"],
+                    "exposure_score" : exposure_score,
+                    "exposure_level" : exposure_level,
+                    "exposure_text:" : exposure_text,
                  }
 
     #This is basically to help start the HTML code for the front end
@@ -63,195 +94,7 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Airly</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    body {
-      font-family: 'Playfair Display', serif;
-
-      background-image: url("bg.png");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-
-      color: white;
-    }
-
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 40px;
-      position: relative;
-    }
-
-    .menu {
-      font-size: 28px;
-      cursor: pointer;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 40px;
-      font-size: 22px;
-      font-style: italic;
-    }
-
-    .dropdown {
-      position: absolute;
-      top: 70px;
-      left: 40px;
-      background: white;
-      color: black;
-      border-radius: 10px;
-      display: none;
-      overflow: hidden;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-      z-index: 10;
-    }
-
-    .dropdown div {
-      padding: 14px 22px;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    .dropdown div:hover {
-      background: #f2f2f2;
-    }
-
-    .title {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 70px;
-      font-weight: 700;
-    }
-
-    .city-container {
-      margin-top: 60px;
-      padding: 0 60px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .cities {
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      font-size: 22px;
-    }
-
-    .city span {
-      font-size: 26px;
-    }
-
-    .arrows {
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      font-size: 26px;
-      cursor: pointer;
-    }
-
-    .feedback {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: white;
-      color: black;
-      padding: 12px 18px;
-      border-radius: 30px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .title {
-        font-size: 48px;
-      }
-
-      .nav-links {
-        font-size: 18px;
-        gap: 20px;
-      }
-
-      .city-container {
-        padding: 0 30px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <div class="navbar">
-    <div class="menu" id="menuBtn">☰</div>
-
-    <div class="nav-links">
-      <div>Home</div>
-      <div>Activity</div>
-      <div>Tips</div>>
-    </div>
-
-    <div class="dropdown" id="dropdown">
-      <div>Delhi</div>
-      <div>Bangalore</div>
-      <div>Mumbai</div>
-      <div>Hyderabad</div>
-      <div>Kolkata</div>
-    </div>
-  </div>
-
-  <div class="title">Airly</div>
-
-  <div class="city-container">
-    <div class="cities">
-      <div class="city"><span>X°</span> Delhi</div>
-      <div class="city"><span>X°</span> Bangalore</div>
-      <div class="city"><span>X°</span> Mumbai</div>
-      <div class="city"><span>X°</span> Hyderabad</div>
-      <div class="city"><span>X°</span> Kolkata</div>
-    </div>
-
-    <div class="arrows">
-      <div>➤</div>
-      <div>➤</div>
-      <div>➤</div>
-      <div>➤</div>
-      <div>➤</div>
-    </div>
-  </div>
-
-  <div class="feedback">Feedback</div>
-
-  <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const dropdown = document.getElementById("dropdown");
-
-    menuBtn.addEventListener("click", () => {
-      dropdown.style.display =
-        dropdown.style.display === "block" ? "none" : "block";
-    });
-  </script>
-
-</body>
-</html>
 
 
 
