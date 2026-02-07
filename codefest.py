@@ -14,15 +14,41 @@ def aqi_parameters(aqi):
         return "Air quality is manageable, but indoor workouts masy feel better."
     else:
         return "Masks help, especially near traffic-heavy areas."
+
+#this is for the exposure calculators as the interactive tool
+def exposure_calculator(aqi, hours, effort):
+    exposure = aqi * hours
+
+    if effort == "low":
+        exposure *= 1
+    elif effort == "medium":
+        exposure *= 1.5
+    else:
+        exposure *= 2
+
+    if exposure < 100:
+        level = "low exposure"
+        text = "Health risk isn't that bad today"
+    elif exposure < 300:
+        level = "moderate exposure"
+        text = "You outsoor acyivity time is ok, but try limiting it if possible"
+    else:
+        level = "high exposure"
+        text = "High risk, please stay indoors"
+
+    return round(exposure, 2), level, text
+
 #This is basically for the webpage where the app would get the city from the dropdown thing the user selcts and then post it for python
 @app.route("/", methods=["GET","POST"])
 
 #This defines a funtion for the homepage and sets it as blank right now to add the data to
 def home():
-        data = none
+        data = None
     #basically it will upload the choice of city from the user
         if request.method == "POST":
             city = request.form["city"]
+            hours = float(request.form["hours"])
+            effort = request.form["effort"]
 
             # loctions into longitude and latititude
             geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}"
@@ -42,7 +68,9 @@ def home():
                 weather_url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
                 weather = requests.get(weather_url).json()
 #this is the final classification of the AQI
-                category, advice = classify_aqi()
+                category, advice = aqi_parameters(aqi)
+
+                exposure_score, exposure_level, exposure_text = exposure_calculator(aqi, hours, effort)
 
 #This is basically a dictionary that is putting together all thedata and it will help the HTML designing of the opage.
                 data = {
@@ -51,8 +79,11 @@ def home():
                     "category": category,
                     "advice": advice,
                     "temp": weather["main"]["temp"],
-                    "humidity": weather["main"]["humidity"]
-                    "wind": weather["wind"]["speed"]
+                    "humidity": weather["main"]["humidity"],
+                    "wind": weather["wind"]["speed"],
+                    "exposure_score" : exposure_score,
+                    "exposure_level" : exposure_level,
+                    "exposure_text:" : exposure_text,
                  }
 
     #This is basically to help start the HTML code for the front end
@@ -63,3 +94,11 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
+
+
+
+
+
+
+    
+    
