@@ -7,12 +7,21 @@ API_KEY = "98284da501aa12de56f8e74f07155135"
 
 @app.route("/delhi")
 def delhi():
-    return render_template("Delhi.html")
+    city = "Delhi"
 
+    city_aqi = get_aqi(city)
+    city_weather = get_weather(city)
+
+    return render_template(
+        "delhi.html",
+        aqi=city_aqi,
+        weather=city_weather
+    )
 
 @app.route("/mumbai")
 def mumbai():
-    return render_template("Mumbai.html")
+    c
+    return render_template("mumbai.html", aqi=city_aqi, weather=city_weather)
 
 
 @app.route("/bangalore")
@@ -29,6 +38,20 @@ def kolkata():
 def hyderabad():
     return render_template("Hydrabad.html")
 
+
+def get_city_aqi(city):
+    geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}"
+    geo = requests.get(geo_url).json()
+
+    if not geo:
+        return None
+
+    lat, lon = geo[0]["lat"], geo[0]["lon"]
+
+    aqi_url = f"http://api.openweathermap.org/data/2.5/air_pollution?lat={lat}&lon={lon}&appid={API_KEY}"
+    aqi_data = requests.get(aqi_url).json()
+
+    return aqi_data["list"][0]["main"]["aqi"]
 
 #This is a function that defines the parameters of the aqi and what we can do in that aqi
 def aqi_parameters(aqi):
@@ -70,6 +93,16 @@ def exposure_calculator(aqi, hours, effort):
 def home():
     data = None
 
+    city_aqi = {
+    "delhi": get_city_aqi("Delhi"),
+    "mumbai": get_city_aqi("Mumbai"),
+    "bangalore": get_city_aqi("Bangalore"),
+    "hyderabad": get_city_aqi("Hyderabad"),
+    "kolkata": get_city_aqi("Kolkata"),
+}
+
+
+
     if request.method == "POST":
         city = request.form["city"]
         hours = float(request.form["hours"])
@@ -105,15 +138,8 @@ def home():
             }
 
     # THIS must be INSIDE the function but OUTSIDE the if
-    return render_template("Airly.html", data=data)
+    return render_template("Airly.html", data=data, aqi=city_aqi)
 
 #this is checking if the main page's name is main and then it will hold true for the rest of the code.
 if __name__ == "__main__":
-    app.run(debug=True)
-
-
-
-
-
-    
-    
+    app.run(debug=False)
