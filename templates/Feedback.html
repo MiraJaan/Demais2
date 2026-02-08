@@ -2,150 +2,238 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Activity Advisor Panel</title>
+  <title>Feedback | Airly</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-    }
-
-    .card {
-      background: #fff4ea;
-      width: 360px;
-      padding: 20px;
-      border-radius: 14px;
-    }
-
-    .top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .pill {
-      background: #d6b18a;
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 14px;
-    }
-
-    .content {
-      display: flex;
-      gap: 18px;
-    }
-
-    /* KEYPAD */
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 60px);
-      grid-template-rows: repeat(4, 50px);
-      gap: 10px;
-    }
-
-    .key {
-      background: black;
+      min-height: 100vh;
+      font-family: 'Playfair Display', serif;
+      background-color: #1a1a1a; /* fallback */
+      background-image: url("bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       color: white;
-      border-radius: 8px;
+    }
+
+    /* NAVBAR */
+    .navbar {
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 18px;
+      justify-content: space-between;
+      padding: 20px 40px;
+      position: relative;
+    }
+
+    .menu {
+      font-size: 26px;
       cursor: pointer;
     }
 
-    .zero {
-      grid-column: span 3;
-    }
-
-    /* SIDE BUTTONS */
-    .side {
+    .nav-links {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      gap: 80px;
+      font-style: italic;
+      font-size: 22px;
     }
 
-    .side-btn {
-      background: black;
+    a {
+      color: inherit;
+      text-decoration: none;
+      font: inherit;
+    }
+
+    /* DROPDOWN */
+    .dropdown {
+      position: absolute;
+      top: 70px;
+      left: 40px;
+      background: white;
+      color: black;
+      border-radius: 10px;
+      display: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      z-index: 10;
+    }
+
+    .dropdown div {
+      padding: 14px 22px;
+      cursor: pointer;
+    }
+
+    .dropdown div:hover {
+      background: #f2f2f2;
+    }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: rgba(255,255,255,0.6);
+      margin-bottom: 40px;
+    }
+
+    /* CONTENT */
+    .content {
+      text-align: center;
+      padding: 40px;
+    }
+
+    .title {
+      font-size: 64px;
+      margin-bottom: 40px;
+    }
+
+    /* INPUT */
+    input[type="text"] {
+      width: 320px;
+      padding: 14px 22px;
+      font-size: 16px;
+      font-family: 'Montserrat', sans-serif;
+      background: white;
+      color: #333;
+      border: none;
+      border-radius: 40px;
+      outline: none;
+      display: block;
+      margin: 0 auto 30px auto;
+    }
+
+    /* SUBMIT BUTTON */
+    button {
+      padding: 14px 36px;
+      border-radius: 40px;
+      border: 2px solid white;
+      background: transparent;
       color: white;
-      width: 40px;
-      height: 50px;
-      border-radius: 8px;
-      display: flex;
+      font-size: 18px;
+      font-family: 'Montserrat', sans-serif;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: white;
+      color: #333;
+    }
+
+    p {
+      margin-top: 40px;
+      font-size: 24px;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      z-index: 20;
     }
 
-    .tall {
-      height: 110px;
+    .popup-box {
+      background: white;
+      color: black;
+      padding: 30px 40px;
+      border-radius: 16px;
+      text-align: center;
+      width: 320px;
+      font-family: 'Montserrat', sans-serif;
     }
 
-    .effort {
-      font-size: 18px;
-      line-height: 1.6;
+    .popup-box h2 {
+      margin-bottom: 15px;
     }
 
-    .footer-text {
+    .popup-box button {
       margin-top: 20px;
-      font-size: 15px;
+      border: none;
+      background: black;
+      color: white;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="menu" id="menuBtn">☰</div>
 
-    <!-- TOP -->
-    <div class="top">
-      <div class="pill">Hours Outside</div>
-      <div class="pill">Effort Required</div>
+    <div class="nav-links">
+      <a href="Airly.html">Home</a>
+      <a href="Advisor.html">Activity</a>
+      <a href="Tips.html">Tips</a>
     </div>
 
-    <div class="content">
+    <div></div>
 
-      <!-- KEYPAD -->
-      <div class="keypad">
-        <div class="key">1</div>
-        <div class="key">2</div>
-        <div class="key">3</div>
 
-        <div class="key">4</div>
-        <div class="key">5</div>
-        <div class="key">6</div>
-
-        <div class="key">7</div>
-        <div class="key">8</div>
-        <div class="key">9</div>
-
-        <div class="key zero">0</div>
-      </div>
-
-      <!-- SIDE -->
-      <div class="side">
-        <div class="side-btn">−</div>
-        <div class="side-btn tall">+</div>
-      </div>
-
-      <!-- EFFORT LABEL -->
-      <div class="effort">
-        Low<br>
-        Medium<br>
-        High
-      </div>
-
+    <div class="dropdown" id="dropdown">
+      <div><a href="Delhi.html">Delhi</a></div>
+      <div><a href="Bangalore.html">Bangalore</a></div>
+      <div><a href="Mumbai.html">Mumbai</a></div>
+      <div><a href="Hyderabad.html">Hyderabad</a></div>
+      <div><a href="Kolkata.html">Kolkata</a></div>
+      <div><a href="Feedback.html">Feedback</a></div>
     </div>
-
-    <div class="footer-text">
-      Your level is _____. It’s recommended to ________ and _____.
-    </div>
-
   </div>
+
+  <div class="divider"></div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="title">Feedback</div>
+
+    <input type="text" placeholder="Enter your feedback">
+
+    <button id="submitBtn">Submit</button>
+
+    <p>We value your opinion</p>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-box">
+      <h2>Thank you!</h2>
+      <p>Your feedback has been submitted.</p>
+      <button id="closePopup">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const dropdown = document.getElementById("dropdown");
+
+    menuBtn.addEventListener("click", () => {
+      dropdown.style.display =
+        dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    const submitBtn = document.getElementById("submitBtn");
+    const popup = document.getElementById("popup");
+    const closePopup = document.getElementById("closePopup");
+
+    submitBtn.addEventListener("click", () => {
+      popup.style.display = "flex";
+    });
+
+    closePopup.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+  </script>
 
 </body>
 </html>

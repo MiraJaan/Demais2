@@ -3,22 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>Airly</title>
-  <link rel="icon" type="image/x-icon" href="favicon.png">
+
+  <!-- FIXED favicon path -->
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       height: 100vh;
       font-family: 'Playfair Display', serif;
-      background-image: url(bg.png);
+      background: url("{{ url_for('static', filename='bg.png') }}");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -35,10 +34,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.6);
     }
 
-    .menu {
-      font-size: 28px;
-      cursor: pointer;
-    }
+    .menu { font-size: 28px; cursor: pointer; }
 
     .nav-links {
       display: flex;
@@ -59,23 +55,17 @@
       z-index: 10;
     }
 
-    .dropdown div {
+    .dropdown a {
+      display: block;
       padding: 14px 22px;
-      cursor: pointer;
+      color: black;
+      text-decoration: none;
       font-size: 18px;
     }
 
-    .dropdown div:hover {
-      background: #f2f2f2;
-    }
+    .dropdown a:hover { background: #f2f2f2; }
 
-    a{
-    color: inherit;
-    text-decoration: none;
-    font: inherit;
-    text-align: center;
-    padding: 14px 22px;
-    }
+    a { color: inherit; text-decoration: none; }
 
     .title {
       text-align: center;
@@ -89,7 +79,7 @@
       padding-left: 200px;
       display: flex;
       justify-content: space-between;
-      padding-right: 60px;
+      padding-right: 200px;
     }
 
     .cities {
@@ -99,45 +89,19 @@
       font-size: 22px;
     }
 
-    .city {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      line-height: 1.1;
-      opacity: 0.95;
-    }
-
-    .city span {
-      font-size: 26px;
-    }
+    .city span { font-size: 26px; }
 
     .arrows {
       display: flex;
       flex-direction: column;
       gap: 32px;
       font-size: 26px;
-      cursor: pointer;
-      padding-right: 200px;
-    }
-
-    .arrow {
-      opacity: 0.85;
     }
 
     @media (max-width: 768px) {
-      .title {
-        font-size: 48px;
-      }
-
-      .nav-links {
-        font-size: 18px;
-        gap: 20px;
-      }
-
-      .city-container {
-        padding-left: 30px;
-        padding-right: 30px;
-      }
+      .title { font-size: 48px; }
+      .nav-links { font-size: 18px; gap: 20px; }
+      .city-container { padding: 0 30px; }
     }
   </style>
 </head>
@@ -148,20 +112,18 @@
     <div class="menu" id="menuBtn">☰</div>
 
     <div class="nav-links">
-      <div><a href="Airly.html">Home</a></div>
-      <div><a href="Advisor.html">Activity</a></div>
-      <div><a href="Tips.html">Tips</a></div>
+      <div><a href="/">Home</a></div>
+      <div><a href="/advisor">Activity</a></div>
+      <div><a href="/tips">Tips</a></div>
     </div>
 
-    <div></div>
-
     <div class="dropdown" id="dropdown">
-      <div><a href="Delhi.html">Delhi</a></div>
-<div><a href="Bangalore.html">Bangalore</a></div>
-<div><a href="Mumbai.html">Mumbai</a></div>
-<div><a href="Hyderabad.html">Hyderabad</a></div>
-<div><a href="Kolkata.html">Kolkata</a></div>
-<div><a href="Feedback.html">Feedback</a></div>
+      <a href="/">Home</a>
+      <a href="/delhi">Delhi</a>
+      <a href="/mumbai">Mumbai</a>
+      <a href="/bangalore">Bangalore</a>
+      <a href="/kolkata">Kolkata</a>
+      <a href="/hyderabad">Hyderabad</a>
     </div>
   </div>
 
@@ -178,11 +140,11 @@
     </div>
 
     <div class="arrows">
-      <div class="arrow"><a href="Delhi.html">➤</a></div>
-      <div class="arrow"><a href="Bangalore.html">➤</a></div>
-      <div class="arrow"><a href="Mumbai.html">➤</a></div>
-      <div class="arrow"><a href="Hyderabad.html">➤</a></div>
-      <div class="arrow"><a href="Kolkata.html">➤</a></div>
+      <div><a href="/delhi">➤</a></div>
+      <div><a href="/bangalore">➤</a></div>
+      <div><a href="/mumbai">➤</a></div>
+      <div><a href="/hyderabad">➤</a></div>
+      <div><a href="/kolkata">➤</a></div>
     </div>
   </div>
 
@@ -191,8 +153,7 @@
     const dropdown = document.getElementById("dropdown");
 
     menuBtn.addEventListener("click", () => {
-      dropdown.style.display =
-        dropdown.style.display === "block" ? "none" : "block";
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
     });
   </script>
 

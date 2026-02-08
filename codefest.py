@@ -36,8 +36,15 @@ def kolkata():
 
 @app.route("/hyderabad")
 def hyderabad():
-    return render_template("Hydrabad.html")
+    return render_template("Hyderabad.html")
 
+@app.route("/advisor")
+def advisor():
+    return render_template("Advisor.html")
+
+@app.route("/tips")
+def tips():
+    return render_template("Tips.html")
 
 def get_city_aqi(city):
     geo_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={API_KEY}"
@@ -65,6 +72,7 @@ def aqi_parameters(aqi):
         return "Poor", "Consider limiting outdoor time, especially for sensitive groups."
     else:
         return "Very Poor", "Masks help, stay indoors."
+    
 #this is for the exposure calculators as the interactive tool
 def exposure_calculator(aqi, hours, effort):
     exposure = aqi * hours
@@ -122,12 +130,13 @@ def home():
             weather_url = f"http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric"
             weather = requests.get(weather_url).json()
 
-            advice = aqi_parameters(aqi)
+            category, advice = aqi_parameters(aqi)
             exposure_score, exposure_level, exposure_text = exposure_calculator(aqi, hours, effort)
 
             data = {
-                "city": city,
+              "city": city,
                 "aqi": aqi,
+                "category": category,   # ADD THIS LINE
                 "advice": advice,
                 "temp": weather["main"]["temp"],
                 "humidity": weather["main"]["humidity"],
@@ -135,7 +144,8 @@ def home():
                 "exposure_score": exposure_score,
                 "exposure_level": exposure_level,
                 "exposure_text": exposure_text
-            }
+        }
+
 
     # THIS must be INSIDE the function but OUTSIDE the if
     return render_template("Airly.html", data=data, aqi=city_aqi)
