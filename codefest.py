@@ -9,22 +9,33 @@ API_KEY = "98284da501aa12de56f8e74f07155135"
 def delhi():
     return render_template("Delhi.html")
 
+
 @app.route("/mumbai")
 def mumbai():
     return render_template("Mumbai.html")
+
 
 @app.route("/bangalore")
 def bangalore():
     return render_template("Bangalore.html")
 
+
 @app.route("/kolkata")
 def kolkata():
     return render_template("Kolkata.html")
+
 
 @app.route("/hyderabad")
 def hyderabad():
     return render_template("Hyderabad.html")
 
+@app.route("/advisor")
+def advisor():
+    return render_template("Advisor.html")
+
+@app.route("/tips")
+def tips():
+    return render_template("Tips.html")
 
 #This is a function that defines the parameters of the aqi and what we can do in that aqi
 def aqi_parameters(aqi):
