@@ -18,7 +18,7 @@
     body {
       height: 100vh;
       font-family: 'Playfair Display', serif;
-      background-image: url(bg.png);
+      background: url("{{ url_for('static', filename='bg.png') }}");
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
