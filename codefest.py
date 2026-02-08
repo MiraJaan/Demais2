@@ -6,14 +6,16 @@ API_KEY = "98284da501aa12de56f8e74f07155135"
 
 #This is a function that defines the parameters of the aqi and what we can do in that aqi
 def aqi_parameters(aqi):
-    if aqi<=50:
+    if aqi == 1:
         return "Air this clean doesn’t come every day — open those windows!"
-    elif aqi<=100:
+    elif aqi == 2 :
         return "Light exercise outdoors is fine, just avoid peak traffic roads."
-    elif aqi<=200:
+    elif aqi == 3 :
         return "Air quality is manageable, but indoor workouts masy feel better."
+    elif aqi == 4 :
+        return "Consider limiting outdoor time, especially sensitive areas"
     else:
-        return "Masks help, especially near traffic-heavy areas."
+        return "Masks help, stay indoors."
 
 #this is for the exposure calculators as the interactive tool
 def exposure_calculator(aqi, hours, effort):
@@ -83,11 +85,12 @@ def home():
                     "wind": weather["wind"]["speed"],
                     "exposure_score" : exposure_score,
                     "exposure_level" : exposure_level,
-                    "exposure_text:" : exposure_text,
+                    "exposure_text" : exposure_text, 
+                     
                  }
 
     #This is basically to help start the HTML code for the front end
-    return render_template("index.html", data=data)
+        return render_template("index.html", data=data)
 
 #this is checking if the main page's name is main and then it will hold true for the rest of the code.
 if __name__ == "__main__":
