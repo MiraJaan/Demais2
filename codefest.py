@@ -15,8 +15,8 @@ def aqi_parameters(aqi):
     elif aqi == 4 :
         return "Consider limiting outdoor time, especially sensitive areas"
     else:
-        return "Masks help, stay indoors."
-
+        return "Masks help, stay indoors."    
+    
 #this is for the exposure calculators as the interactive tool
 def exposure_calculator(aqi, hours, effort):
     exposure = aqi * hours
@@ -71,8 +71,9 @@ def home():
                 weather = requests.get(weather_url).json()
 #this is the final classification of the AQI
                 category, advice = aqi_parameters(aqi)
-
+#just basically creating the variables for the distionary later on
                 exposure_score, exposure_level, exposure_text = exposure_calculator(aqi, hours, effort)
+
 
 #This is basically a dictionary that is putting together all thedata and it will help the HTML designing of the opage.
                 data = {
@@ -85,19 +86,14 @@ def home():
                     "wind": weather["wind"]["speed"],
                     "exposure_score" : exposure_score,
                     "exposure_level" : exposure_level,
-                    "exposure_text" : exposure_text, 
-                     
-                 }
-
+                    "exposure_text" : exposure_text,
+                }
     #This is basically to help start the HTML code for the front end
         return render_template("index.html", data=data)
 
 #this is checking if the main page's name is main and then it will hold true for the rest of the code.
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
 
 
 
