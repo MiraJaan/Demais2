@@ -4,18 +4,44 @@ import requests
 app = Flask(__name__)
 API_KEY = "98284da501aa12de56f8e74f07155135"
 
+
+@app.route("/delhi")
+def delhi():
+    return render_template("Delhi.html")
+
+
+@app.route("/mumbai")
+def mumbai():
+    return render_template("Mumbai.html")
+
+
+@app.route("/bangalore")
+def bangalore():
+    return render_template("Bangalore.html")
+
+
+@app.route("/kolkata")
+def kolkata():
+    return render_template("Kolkata.html")
+
+
+@app.route("/hyderabad")
+def hyderabad():
+    return render_template("Hydrabad.html")
+
+
 #This is a function that defines the parameters of the aqi and what we can do in that aqi
 def aqi_parameters(aqi):
     if aqi == 1:
-        return "Air this clean doesn’t come every day — open those windows!"
-    elif aqi == 2 :
-        return "Light exercise outdoors is fine, just avoid peak traffic roads."
-    elif aqi == 3 :
-        return "Air quality is manageable, but indoor workouts masy feel better."
-    elif aqi == 4 :
-        return "Consider limiting outdoor time, especially sensitive areas"
+        return "Good", "Air this clean doesn’t come every day — open those windows!"
+    elif aqi == 2:
+        return "Fair", "Light exercise outdoors is fine, just avoid peak traffic roads."
+    elif aqi == 3:
+        return "Moderate", "Air quality is manageable, but indoor workouts may feel better."
+    elif aqi == 4:
+        return "Poor", "Consider limiting outdoor time, especially for sensitive groups."
     else:
-        return "Masks help, stay indoors."
+        return "Very Poor", "Masks help, stay indoors."
 
 #this is for the exposure calculators as the interactive tool
 def exposure_calculator(aqi, hours, effort):
@@ -90,7 +116,7 @@ def home():
                  }
 
     #This is basically to help start the HTML code for the front end
-        return render_template("index.html", data=data)
+        return render_template("Airly.html", data=data)
 
 #this is checking if the main page's name is main and then it will hold true for the rest of the code.
 if __name__ == "__main__":
